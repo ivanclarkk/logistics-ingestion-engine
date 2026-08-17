@@ -3,7 +3,7 @@
 A high-performance, cloud-native data ingestion pipeline designed with process isolation and fault containment perimeters to stream and normalize industrial logistics manifests in real time.
 
 ## Live Production Environment
-Link to live application: [https://github.com/ivanclarkk/logistics-ingestion-engine/blob/main/app.py]
+Link to live application: [https://logistics-ingestion-engine-55z9rgpkrdxqwaopl4gxqd.streamlit.app/]
 
 ---
 
