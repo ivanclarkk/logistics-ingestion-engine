@@ -1,114 +1,48 @@
-# import streamlit as st
-import pandas as pd
-import time
+# Associated Terminals Logistics Ingestion Engine
 
-# 1. INITIALIZE SYSTEM CONTAINER LAYOUT
-st.set_page_config(page_title="Associated Terminals Ingestion Engine", layout="wide")
+A high-performance, cloud-native data ingestion pipeline designed with process isolation and fault containment perimeters to stream and normalize industrial logistics manifests in real time.
 
-st.title("Associated Terminals Logistics Ingestion Engine")
-st.subheader("High-Throughput Data Parsing Pipeline with Complete Fault Isolation")
-st.markdown("---")
+## Live Production Environment
+Link to live application: [PASTE YOUR LIVE STREAMLIT APP LINK HERE]
 
-st.sidebar.header("System Control Panel")
-simulation_latency = st.sidebar.slider("Simulated Processing Latency (Seconds per Block)", 0.0, 2.0, 0.2)
+---
 
-# 2. SEED SAMPLE DATA FOR THE RECRUITER TO DOWNLOAD AND TEST
-st.sidebar.markdown("### Test Ingestion Manifest")
-st.sidebar.markdown("Use this raw sample data to test the system pipeline live:")
+## Core Engineering Specialties
 
-sample_csv_data = """Barge_ID,Tonnage,Material,Status
-AT-9942,1250.50,Petroleum Coke,Active
-AT-8812, 940.25 , Metallurgical Coal ,Active
-CORRUPTED_ROW_X99,ERROR,UNKNOWN,Malformed
-AT-7731,1420.00,Combed Cotton,Active
-,0.0,Blank,Missing
-AT-5541,1100.75,Japanese Selvedge Denim,Active"""
+This engine was constructed from first principles to demonstrate robust systems engineering under data and concurrency constraints, aligning with real-time, low-latency infrastructure demands.
 
-st.sidebar.download_button(
-    label="Download Sample Messy CSV",
-    data=sample_csv_data,
-    file_name="messy_manifest_sample.csv",
-    mime="text/csv"
-)
+### 1. Fault Isolation Barriers
+The architecture treats incoming files as unpredictable payloads. Utilizing defensive validation loops, individual row anomalies or corrupted strings are immediately trapped and sandboxed into an isolated anomaly ledger. This prevents data corruption or cascading runtime panics, ensuring platform execution uptime.
 
-# 3. HIGH-VELOCITY INGESTION CORE PIPELINE
-def execute_fault_isolated_ingestion(file_object) -> list:
-    """
-    Simulates high-throughput streaming. Iterates through rows, cleans data,
-    and traps format anomalies cleanly without dropping the server thread.
-    """
-    processed_records = []
-    anomaly_logs = []
-    
-    try:
-        raw_dataframe = pd.read_csv(file_object)
-        
-        # Iterative Processing Loop
-        for index, row in raw_dataframe.iterrows():
-            time.sleep(simulation_latency) # Simulate real-time streaming constraints
-            
-            try:
-                # Capture and sanitize row variables
-                barge_id = str(row.get('Barge_ID', '')).strip().upper()
-                tonnage_raw = row.get('Tonnage', 0)
-                material = str(row.get('Material', '')).strip()
-                status = str(row.get('Status', '')).strip().upper()
-                
-                # Strict Fault Isolation Check: Validate row integrity
-                if pd.isna(row['Barge_ID']) or "CORRUPTED" in barge_id or "ERROR" in str(tonnage_raw):
-                    raise ValueError(f"Structural data anomaly detected at index entry row {index}")
-                
-                # Append cleaned payload record to secure output array
-                processed_records.append({
-                    "Timestamp": time.strftime("%H:%M:%S"),
-                    "Barge_ID": barge_id,
-                    "Net_Tonnage": float(tonnage_raw),
-                    "Material_Type": material,
-                    "Operational_Status": status
-                })
-                
-            except Exception as row_error:
-                # Safe Fault Containment: Process isolation preserves execution uptime
-                anomaly_logs.append({
-                    "Index": index,
-                    "Error_Type": type(row_error).__name__,
-                    "Diagnostic_Message": str(row_error)
-                })
-                continue
-                
-    except Exception as critical_system_fault:
-        st.error(f"Critical System I/O Error: {critical_system_fault}")
-        
-    return processed_records, anomaly_logs
+### 2. Stream Data Telemetry Normalization
+The ingestion pipeline automatically processes structural columns, cleansing whitespace padding, isolating empty indices, and forcing type-casting rules. This maps to automated telemetry data parsing setups used in enterprise micro-service networks.
 
-# 4. LIVE FILE DEPLOYMENT GATEWAY
-uploaded_manifest = st.file_uploader("Deploy Raw Client Logistics Manifest (CSV Format)", type=["csv"])
+### 3. Latency and Resource Simulation
+The platform features an interactive control panel to simulate processing latency per data block, mirroring real-time streaming constraints and thread scheduling physics required by high-volume APIs.
 
-if uploaded_manifest is not None:
-    st.markdown("### Real-Time Pipeline Execution Logs")
-    progress_bar = st.progress(0)
-    
-    # Trigger Ingestion
-    with st.spinner("Processing incoming telemetry stream arrays..."):
-        clean_ledger, diagnostics = execute_fault_isolated_ingestion(uploaded_manifest)
-        progress_bar.progress(100)
-    
-    # 5. RENDER SYSTEM PERFORMANCE RESULTS LAYER
-    st.success(f"Processing Complete. Successfully Ingested {len(clean_ledger)} Rows Safely.")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("#### Verified System Output Ledger")
-        if clean_ledger:
-            st.dataframe(pd.DataFrame(clean_ledger), use_container_width=True)
-        else:
-            st.info("No records cleared the validation perimeter.")
-            
-    with col2:
-        st.markdown("#### Isolated System Anomalies (Trapped Rows)")
-        if diagnostics:
-            st.dataframe(pd.DataFrame(diagnostics), use_container_width=True)
-            st.warning("Fault isolation active. Malformed rows were safely sandboxed to preserve system uptime.")
-        else:
-            st.info("Zero anomalies logged. Complete data integrity achieved.")
+---
+
+## Technical Stack and Components
+* Language Syntax Core: Python 3.x
+* Infrastructure Core: Streamlit Community Cloud
+* Data Manipulation Engine: Pandas DataFrames
+
+## Local Verification and Installation
+To inspect or run this engine on a local server terminal workspace, execute these commands:
+
+```bash
+# Clone the open-source repository
+git clone https://github.com
+
+# Navigate to the workspace directory
+cd logistics-ingestion-engine
+
+# Ingest package dependencies
+pip install streamlit pandas
+
+# Initialize the runtime pipeline
+streamlit run app.py
+```
+
+---
+Maintained under private deployment archives by Ivan Clark - Platform and Systems Engineering Portfolio.
